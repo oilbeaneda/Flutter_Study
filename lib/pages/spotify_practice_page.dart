@@ -19,264 +19,177 @@ import 'package:flutter/material.dart';
 ///  ├─ Row (셔플 / 이전 / 재생 / 다음 / 반복)
 ///  ├─ Spacer
 ///  └─ Row (기기 연결 / 재생목록)
+
+class AppColors {
+  static const white = Colors.white;
+  static const whiteSmoke = Color.fromRGBO(255, 255, 255, 0.3);
+}
+
 class SpotifyPracticePage extends StatelessWidget {
   const SpotifyPracticePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF2C2C14),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-
-          child: Column(
-            children: [
-              const SizedBox(height: 8),
-
-              // ─── 상단 바: ∨ 버튼 / 앨범명 / ··· 버튼 ───
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down,
-
-                      color: Colors.white,
-
-                      size: 32,
-                    ),
-                  ),
-
-                  const Text(
-                    '새소년',
-
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-
-                  IconButton(
-                    onPressed: () {},
-
-                    icon: const Icon(Icons.more_horiz, color: Colors.white),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 24),
-
-              // ─── 앨범 아트 이미지 ───
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-
-                child: AspectRatio(
-                  aspectRatio: 1,
-
-                  child: Image.network(
-                    'https://picsum.photos/400/400?random=spotify',
-
-                    fit: BoxFit.cover,
-
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[800],
-
-                        child: const Center(
-                          child: Icon(
-                            Icons.music_note,
-
-                            color: Colors.white54,
-
-                            size: 80,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFAFA061), Color.fromARGB(255, 61, 56, 33)],
+            stops: [0.0, 0.9],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Icon(
+                        Icons.keyboard_arrow_down,
+                        color: AppColors.white,
+                        size: 35,
+                      ),
+                      Column(
+                        children: const [
+                          Text(
+                            "새소년",
+                            style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        ],
+                      ),
+                      const Icon(Icons.more_horiz, color: AppColors.white),
+                    ],
                   ),
                 ),
-              ),
+                const Spacer(flex: 1),
 
-              const SizedBox(height: 24),
+                // 2. 앨범 이미지
+                Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.width * 0.85,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.5),
+                        spreadRadius: 2,
+                        blurRadius: 30,
+                        offset: const Offset(0, 20),
+                      ),
+                    ],
+                    image: const DecorationImage(
+                      image: AssetImage('assets/images/img_sesoneon.jpg'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                const Spacer(flex: 1),
 
-              // ─── 곡 제목 + 좋아요 버튼 ───
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                children: [
-                  const Expanded(
-                    child: Column(
+                // 3. 곡 정보 (제목과 가수)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
+                      children: const [
                         Text(
-                          'NAN CHUN 난춘',
-
+                          "NAN CHUN 난춘",
                           style: TextStyle(
-                            color: Colors.white,
-
                             fontSize: 22,
-
                             fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
-
-                        SizedBox(height: 4),
-
+                        SizedBox(height: 1),
                         Text(
-                          '새소년',
-
-                          style: TextStyle(color: Colors.white70, fontSize: 14),
+                          "새소년",
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w300,
+                          ),
                         ),
                       ],
                     ),
-                  ),
-
-                  IconButton(
-                    onPressed: () {},
-
-                    icon: const Icon(
-                      Icons.favorite_border,
-
+                    const Icon(
+                      Icons.favorite_outline_outlined,
                       color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 8),
-
-              // ─── 재생 슬라이더 ───
-              SliderTheme(
-                data: SliderThemeData(
-                  trackHeight: 3,
-
-                  thumbShape: const RoundSliderThumbShape(
-                    enabledThumbRadius: 6,
-                  ),
-
-                  overlayShape: const RoundSliderOverlayShape(
-                    overlayRadius: 14,
-                  ),
-
-                  activeTrackColor: Colors.white,
-
-                  inactiveTrackColor: Colors.white24,
-
-                  thumbColor: Colors.white,
-                ),
-
-                child: Slider(value: 0.48, onChanged: (value) {}),
-              ),
-
-              // ─── 재생 시간 ───
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4),
-
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                  children: [
-                    Text(
-                      '1:52',
-
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-
-                    Text(
-                      '-1:56',
-
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
+                      size: 30,
                     ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 20),
 
-              const SizedBox(height: 8),
-
-              // ─── 재생 컨트롤 버튼 ───
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                children: [
-                  IconButton(
-                    onPressed: () {},
-
-                    icon: const Icon(
-                      Icons.shuffle,
-
-                      color: Colors.white,
-
-                      size: 24,
+                // 4. 재생 바 (Slider)
+                SliderTheme(
+                  data: SliderTheme.of(context).copyWith(
+                    trackHeight: 4,
+                    thumbShape: const RoundSliderThumbShape(
+                      enabledThumbRadius: 6,
                     ),
+                    overlayShape: SliderComponentShape.noOverlay,
+                    activeTrackColor: Colors.white,
+                    inactiveTrackColor: Colors.white.withOpacity(0.3),
+                    thumbColor: Colors.white,
                   ),
+                  child: Slider(value: 0.6, onChanged: (value) {}),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "1:52",
+                      style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                    ),
+                    Text(
+                      "3:45",
+                      style: TextStyle(color: Colors.grey[400], fontSize: 12),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
 
-                  IconButton(
-                    onPressed: () {},
-
-                    icon: const Icon(
+                // 5. 컨트롤 버튼
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Icon(Icons.shuffle, color: Colors.white54, size: 28),
+                    const Icon(
                       Icons.skip_previous,
-
                       color: Colors.white,
-
-                      size: 36,
+                      size: 45,
                     ),
-                  ),
-
-                  // 재생/일시정지 버튼 (큰 원형)
-                  Container(
-                    width: 64,
-
-                    height: 64,
-
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-
-                      shape: BoxShape.circle,
-                    ),
-
-                    child: IconButton(
-                      onPressed: () {},
-
-                      icon: const Icon(
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
                         Icons.pause,
-
-                        color: Colors.black,
-
-                        size: 32,
+                        color: Color(0xFF252214),
+                        size: 40,
                       ),
                     ),
-                  ),
-
-                  IconButton(
-                    onPressed: () {},
-
-                    icon: const Icon(
-                      Icons.skip_next,
-
-                      color: Colors.white,
-
-                      size: 36,
-                    ),
-                  ),
-
-                  IconButton(
-                    onPressed: () {},
-
-                    icon: const Icon(
-                      Icons.repeat,
-
-                      color: Colors.white,
-
-                      size: 24,
-                    ),
-                  ),
-                ],
-              ),
-
-              const Spacer(),
-            ],
+                    const Icon(Icons.skip_next, color: Colors.white, size: 45),
+                    const Icon(Icons.repeat, color: Colors.white54, size: 28),
+                  ],
+                ),
+                const Spacer(flex: 4),
+              ],
+            ),
           ),
         ),
       ),
